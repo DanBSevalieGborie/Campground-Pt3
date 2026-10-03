@@ -1,71 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+    One campground in the list, in the same card style as the parks:
+    a big photo with the nightly price on it, the campground type and number
+    of sites, the name, a short description and the town it's in.
+-->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.ParksAndCampgrounds.Card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:layout_marginStart="12dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginBottom="6dp"
+    android:focusable="true">
 
-    <!-- Campground Image -->
-    <ImageView
-        android:id="@+id/itemCampgroundImage"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="12dp"
-        android:contentDescription="Campground Image"
-        android:scaleType="centerCrop"
-        app:layout_constraintWidth_percent="0.35"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <!-- Campground Title -->
-    <TextView
-        android:id="@+id/itemCampgroundTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:text="Campground Name"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"
-        android:ellipsize="end"
-        android:maxLines="2"
-        app:layout_constraintStart_toEndOf="@id/itemCampgroundImage"
-        app:layout_constraintTop_toTopOf="@id/itemCampgroundImage"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <ImageView
+            android:id="@+id/campground_image"
+            android:layout_width="0dp"
+            android:layout_height="170dp"
+            android:background="@drawable/image_placeholder"
+            android:contentDescription="@string/campground_image_description"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Campground Description -->
-    <TextView
-        android:id="@+id/itemCampgroundDescription"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:text="Campground description..."
-        android:textSize="14sp"
-        android:textColor="@android:color/darker_gray"
-        android:ellipsize="end"
-        android:lineSpacingExtra="2dp"
-        android:maxLines="5"
-        app:layout_constraintStart_toEndOf="@id/itemCampgroundImage"
-        app:layout_constraintTop_toBottomOf="@id/itemCampgroundTitle"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <!-- "$8 / night" tag in the photo's corner -->
+        <TextView
+            android:id="@+id/campground_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:background="@drawable/price_tag_background"
+            android:paddingStart="10dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="4dp"
+            android:textAppearance="?attr/textAppearanceLabelLarge"
+            android:textColor="@color/price_tag_text"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/campground_image"
+            app:layout_constraintEnd_toEndOf="@id/campground_image"
+            tools:text="$8 / night" />
 
-    <!-- Campground Lat/Long -->
-    <TextView
-        android:id="@+id/itemCampgroundLatLong"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="4dp"
-        android:text="Lat: 00.000, Long: 00.000"
-        android:textSize="12sp"
-        android:textColor="@android:color/darker_gray"
-        android:ellipsize="end"
-        android:maxLines="1"
-        app:layout_constraintStart_toEndOf="@id/itemCampgroundImage"
-        app:layout_constraintTop_toBottomOf="@id/itemCampgroundDescription"
-        app:layout_constraintBottom_toBottomOf="@id/itemCampgroundImage"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <TextView
+            android:id="@+id/campground_overline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.ParksAndCampgrounds.Overline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/campground_image"
+            tools:text="Developed Campground · 34 sites" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/campground_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textColor="?attr/colorOnSurface"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/campground_overline"
+            tools:text="Bird Island Basin Campground" />
+
+        <TextView
+            android:id="@+id/campground_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/campground_name"
+            tools:text="Bird Island Basin lies along Laguna Madre with easy access for fishing, birding, windsurfing, and kayaking." />
+
+        <TextView
+            android:id="@+id/campground_location"
+            style="@style/Widget.ParksAndCampgrounds.LocationText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/campground_description"
+            tools:text="Corpus Christi, TX" />
+
+        <!-- Bottom padding that stays put even when the location line is hidden -->
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/campground_location" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

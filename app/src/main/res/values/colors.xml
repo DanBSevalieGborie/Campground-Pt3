@@ -1,10 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!--
+        Park-service palette (from the National Parks app): forest green + trail brown.
+        Every color has a matching dark-mode value in values-night/colors.xml.
+    -->
+    <color name="forest_green">#FF2F5D3A</color>
+    <color name="on_forest_green">#FFFFFFFF</color>
+    <color name="forest_green_container">#FFCDE8CF</color>
+    <color name="on_forest_green_container">#FF0B2913</color>
+
+    <color name="trail_brown">#FF7A5A2B</color>
+    <color name="on_trail_brown">#FFFFFFFF</color>
+    <color name="trail_brown_container">#FFF3E1C4</color>
+    <color name="on_trail_brown_container">#FF2C1D05</color>
+
+    <color name="screen_background">#FFF4F5EF</color>
+    <color name="card_background">#FFFFFFFF</color>
+    <color name="text_primary">#FF1B1D1A</color>
+    <color name="text_secondary">#FF4A5048</color>
+    <color name="outline">#FFC4C8BD</color>
+    <color name="image_placeholder">#FFE3E6DC</color>
+
+    <!-- Material 3 "surface container" tones, tinted green instead of the default purple -->
+    <color name="surface_container_lowest">#FFFFFFFF</color>
+    <color name="surface_container_low">#FFF0F2EA</color>
+    <color name="surface_container">#FFEAEDE4</color>
+    <color name="surface_container_high">#FFE4E8DE</color>
+    <color name="surface_container_highest">#FFDEE2D8</color>
+
+    <color name="toolbar_background">#FF2F5D3A</color>
+    <color name="on_toolbar">#FFFFFFFF</color>
+    <color name="bottom_nav_background">#FFFFFFFF</color>
+
+    <color name="photo_counter_background">#99000000</color>
+    <color name="price_tag_background">#E6FFFFFF</color>
+    <color name="price_tag_text">#FF2F5D3A</color>
+
+    <!-- Launcher icon -->
+    <color name="ic_launcher_background">#FF2F5D3A</color>
 </resources>

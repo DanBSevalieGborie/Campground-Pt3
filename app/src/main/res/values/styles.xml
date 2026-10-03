@@ -1,0 +1,99 @@
+<resources>
+
+    <!-- View styling shared by both tabs and both detail screens -->
+
+    <style name="Widget.ParksAndCampgrounds.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/toolbar_background</item>
+        <item name="titleTextColor">@color/on_toolbar</item>
+        <item name="titleTextAppearance">@style/TextAppearance.ParksAndCampgrounds.ToolbarTitle</item>
+        <item name="navigationIconTint">@color/on_toolbar</item>
+    </style>
+
+    <style name="TextAppearance.ParksAndCampgrounds.ToolbarTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!--
+        Bottom navigation: green pill behind the selected tab, filled icon when
+        selected and outlined when not (see drawable/ic_nav_*.xml).
+    -->
+    <style name="Widget.ParksAndCampgrounds.BottomNavigation" parent="Widget.Material3.BottomNavigationView">
+        <item name="backgroundTint">@color/bottom_nav_background</item>
+        <item name="itemIconTint">@color/bottom_nav_icon</item>
+        <item name="itemTextColor">@color/bottom_nav_label</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.ParksAndCampgrounds.NavLabel.Active</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.ParksAndCampgrounds.NavLabel</item>
+        <item name="itemActiveIndicatorStyle">@style/Widget.ParksAndCampgrounds.BottomNavigation.ActiveIndicator</item>
+        <item name="android:elevation">8dp</item>
+    </style>
+
+    <style name="Widget.ParksAndCampgrounds.BottomNavigation.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/forest_green_container</item>
+    </style>
+
+    <style name="TextAppearance.ParksAndCampgrounds.NavLabel" parent="TextAppearance.Material3.LabelMedium" />
+
+    <style name="TextAppearance.ParksAndCampgrounds.NavLabel.Active">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Widget.ParksAndCampgrounds.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/card_background</item>
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">2dp</item>
+    </style>
+
+    <style name="Widget.ParksAndCampgrounds.InfoCard" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">?attr/colorPrimaryContainer</item>
+        <item name="cardCornerRadius">12dp</item>
+    </style>
+
+    <!-- The second info card (campsites) uses the trail-brown container -->
+    <style name="Widget.ParksAndCampgrounds.InfoCard.Secondary">
+        <item name="cardBackgroundColor">?attr/colorSecondaryContainer</item>
+    </style>
+
+    <!-- Small all-caps label: "NATIONAL PARK", "DEVELOPED CAMPGROUND · 34 SITES" -->
+    <style name="TextAppearance.ParksAndCampgrounds.Overline" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textColor">?attr/colorSecondary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- "About", "Amenities", "Weather" headers on the detail screens -->
+    <style name="TextAppearance.ParksAndCampgrounds.SectionTitle" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.ParksAndCampgrounds.Body" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+    </style>
+
+    <style name="Widget.ParksAndCampgrounds.SectionTitle" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.ParksAndCampgrounds.SectionTitle</item>
+    </style>
+
+    <style name="Widget.ParksAndCampgrounds.Section" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <!-- The "Corpus Christi, TX" line with a pin icon -->
+    <style name="Widget.ParksAndCampgrounds.LocationText" parent="">
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="drawableStartCompat">@drawable/ic_place</item>
+        <item name="drawableTint">?attr/colorPrimary</item>
+    </style>
+
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Parks tab icon: filled tree when the tab is selected, outlined when it isn't -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_park_filled" android:state_checked="true" />
+    <item android:drawable="@drawable/ic_park_outlined" />
+</selector>

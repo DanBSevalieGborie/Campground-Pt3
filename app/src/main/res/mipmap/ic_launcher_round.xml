@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Launcher icon for Android 6.0-7.1, which don't support adaptive icons -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#2F5D3A"
+        android:pathData="M54,6A48,48 0,1 1,54 102A48,48 0,1 1,54 6Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M43.164,79L36.494,79L36.494,70.358L18.92,70.358L29.882,54.466L24.372,54.466L39.8,32.6L55.228,54.466L49.776,54.466L60.68,70.358L43.164,70.358L43.164,79Z" />
+    <path
+        android:fillColor="#F3E1C4"
+        android:pathData="M54.68,79L54.68,71.131L70.289,50.018L67.408,46.148L69.515,44.643L71.88,47.868L74.288,44.643L76.352,46.148L73.514,50.018L89.08,71.131L89.08,79L54.68,79ZM65.086,76.42L78.674,76.42L71.88,66.917L65.086,76.42Z" />
+</vector>

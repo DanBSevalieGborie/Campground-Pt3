@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Campgrounds tab icon: filled tent when the tab is selected, outlined when it isn't -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_camping_filled" android:state_checked="true" />
+    <item android:drawable="@drawable/ic_camping_outlined" />
+</selector>

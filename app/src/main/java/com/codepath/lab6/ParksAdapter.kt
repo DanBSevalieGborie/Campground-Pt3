@@ -1,51 +1,67 @@
 package com.codepath.lab6
 
-import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.codepath.lab6.databinding.ItemParkBinding
 
-const val PARK_EXTRA = "PARK_EXTRA"
-
-class ParksAdapter(private val context: Context, private val parks: List<Park>) :
-    RecyclerView.Adapter<ParksAdapter.ViewHolder>() {
+/**
+ * Connects the park cards (item_park.xml) to the list of parks.
+ *
+ * It's a ListAdapter so that when the search filter changes the list,
+ * DiffUtil works out which cards were added or removed and animates them.
+ */
+class ParksAdapter(
+    private val onParkClicked: (NationalPark) -> Unit
+) : ListAdapter<NationalPark, ParksAdapter.ViewHolder>(ParkDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_park, parent, false)
-        return ViewHolder(view)
+        val binding = ItemParkBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(parks[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount() = parks.size
+    inner class ViewHolder(private val binding: ItemParkBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        private val parkImageView: ImageView = itemView.findViewById(R.id.itemParkImage)
-        private val parkNameTextView: TextView = itemView.findViewById(R.id.itemParkTitle)
-        private val parkDescriptionTextView: TextView = itemView.findViewById(R.id.itemParkDescription)
+        fun bind(park: NationalPark) {
+            binding.parkName.text = park.fullName
+            binding.parkDescription.text = park.description
 
-        init {
-            itemView.setOnClickListener(this)
+            binding.parkState.text = park.formattedStateCodes
+            binding.parkState.isVisible = park.stateCodes.isNotEmpty()
+
+            // "National Park", "National Monument"...
+            binding.parkDesignation.text = park.designation
+            binding.parkDesignation.isVisible = park.designation.isNotEmpty()
+
+            // Use the photo's own alt text for screen readers when the API provides it
+            binding.parkImage.contentDescription = park.images.firstOrNull()?.altText
+                ?.takeIf { it.isNotEmpty() }
+                ?: itemView.context.getString(R.string.park_image_description)
+
+            // A null URL shows the placeholder instead of a recycled photo from another card
+            Glide.with(itemView)
+                .load(park.imageUrl)
+                .placeholder(R.drawable.image_placeholder)
+                .centerCrop()
+                .into(binding.parkImage)
+
+            binding.root.setOnClickListener { onParkClicked(park) }
         }
+    }
 
-        fun bind(park: Park) {
-            parkNameTextView.text = park.fullName
-            parkDescriptionTextView.text = park.description
-            Glide.with(context).load(park.imageUrl).into(parkImageView)
-        }
+    private object ParkDiffCallback : DiffUtil.ItemCallback<NationalPark>() {
+        override fun areItemsTheSame(oldItem: NationalPark, newItem: NationalPark): Boolean =
+            oldItem.parkCode == newItem.parkCode
 
-        override fun onClick(v: View?) {
-            val park = parks[absoluteAdapterPosition]
-            val intent = Intent(context, DetailActivity::class.java)
-            intent.putExtra(PARK_EXTRA, park)
-            context.startActivity(intent)
-        }
+        override fun areContentsTheSame(oldItem: NationalPark, newItem: NationalPark): Boolean =
+            oldItem == newItem
     }
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The two bottom navigation tabs -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_parks"
+        android:icon="@drawable/ic_nav_parks"
+        android:title="@string/nav_parks" />
+
+    <item
+        android:id="@+id/nav_campgrounds"
+        android:icon="@drawable/ic_nav_campgrounds"
+        android:title="@string/nav_campgrounds" />
+</menu>

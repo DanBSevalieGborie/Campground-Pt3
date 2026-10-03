@@ -1,94 +1,122 @@
 package com.codepath.lab6
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.codepath.asynchttpclient.AsyncHttpClient
-import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
-import okhttp3.Headers
-import org.json.JSONException
-import kotlin.let
-
-private const val TAG = "CampgroundFragment"
-private const val API_KEY = BuildConfig.API_KEY
-private const val CAMPGROUND_URL =
-    "https://developer.nps.gov/api/v1/campgrounds?api_key=${API_KEY}"
+import com.codepath.lab6.databinding.FragmentCampgroundBinding
+import com.google.android.material.snackbar.Snackbar
 
 /**
- * A simple [Fragment] subclass.
- * Use the [CampgroundFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * The Campgrounds tab: a searchable list of NPS campgrounds, drawn with the
+ * same card style as the Parks tab.
+ *
+ * The networking lives in [CampgroundsViewModel]; this fragment only draws
+ * whatever state the ViewModel is in (loading, error, the campgrounds, or "no matches").
  */
-class CampgroundFragment : Fragment() {
+class CampgroundFragment : Fragment(), ScrollsToTop {
 
-    private val campgrounds = mutableListOf<Campground>()
-    private lateinit var campgroundsRecyclerView: RecyclerView
+    private var _binding: FragmentCampgroundBinding? = null
+    private val binding get() = _binding!!
+
+    // Scoped to MainActivity, so the campgrounds are still here after a tab switch or rotation
+    private val viewModel: CampgroundsViewModel by activityViewModels()
+
     private lateinit var campgroundAdapter: CampgroundAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private var restoredScroll = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Change this statement to store the view in a variable instead of a return statement
-        val view = inflater.inflate(R.layout.fragment_campground, container, false)
+    ): View {
+        _binding = FragmentCampgroundBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        // Add these configurations for the recyclerView and to configure the adapter
-        val layoutManager = LinearLayoutManager(context)
-        campgroundsRecyclerView = view.findViewById(R.id.campground_recycler_view)
-        campgroundsRecyclerView.layoutManager = layoutManager
-        campgroundsRecyclerView.setHasFixedSize(true)
-        campgroundAdapter = CampgroundAdapter(view.context, campgrounds)
-        campgroundsRecyclerView.adapter = campgroundAdapter
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        fetchCampgrounds()
+        campgroundAdapter = CampgroundAdapter { campground ->
+            startActivity(CampgroundDetailActivity.newIntent(requireContext(), campground))
+        }
+        binding.campgroundRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.campgroundRecyclerView.setHasFixedSize(true)
+        binding.campgroundRecyclerView.adapter = campgroundAdapter
 
-        // Update the return statement to return the inflated view from above
-        return view
+        binding.swipeContainer.styleForApp()
+        binding.swipeContainer.setOnRefreshListener { viewModel.load() }
+        binding.status.retryButton.setOnClickListener { viewModel.load() }
+
+        addSearchMenu(R.string.search_campgrounds_hint, { viewModel.query }) { query ->
+            viewModel.query = query
+            viewModel.state.value?.let { render(it, scrollToTop = true) }
+        }
+
+        viewModel.state.observe(viewLifecycleOwner) { render(it, scrollToTop = false) }
+        viewModel.loadIfNeeded()
+    }
+
+    override fun onDestroyView() {
+        // Remember the scroll position for when the user comes back to this tab
+        viewModel.listPosition = binding.campgroundRecyclerView.layoutManager?.onSaveInstanceState()
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun scrollToTop() {
+        _binding?.campgroundRecyclerView?.smoothScrollToPosition(0)
+    }
+
+    private fun render(state: ListState<Campground>, scrollToTop: Boolean) {
+        val results = CampgroundSearch.filter(state.items, viewModel.query)
+        campgroundAdapter.submitList(results) {
+            val binding = _binding ?: return@submitList
+            if (scrollToTop) {
+                binding.campgroundRecyclerView.scrollToPosition(0)
+            } else if (!restoredScroll && results.isNotEmpty()) {
+                restoredScroll = true
+                viewModel.listPosition?.let {
+                    binding.campgroundRecyclerView.layoutManager?.onRestoreInstanceState(it)
+                }
+            }
+        }
+
+        val hasCampgrounds = state.items.isNotEmpty()
+        binding.progressBar.isVisible = state.isLoading && !hasCampgrounds
+        binding.swipeContainer.isRefreshing = state.isLoading && hasCampgrounds
+
+        val error = state.error
+        when {
+            // Nothing to show: explain why, with a Retry button
+            !hasCampgrounds && error != null ->
+                binding.status.show(loadErrorMessage(error, R.string.campgrounds), showRetry = true)
+
+            hasCampgrounds && results.isEmpty() ->
+                binding.status.show(
+                    getString(R.string.no_campgrounds_match, viewModel.query.trim()),
+                    showRetry = false
+                )
+
+            !hasCampgrounds && !state.isLoading ->
+                binding.status.show(getString(R.string.no_campgrounds_found), showRetry = true)
+
+            else -> binding.status.hide()
+        }
+
+        // A pull-to-refresh failed but the old campgrounds are still on screen
+        if (hasCampgrounds && error != null) {
+            Snackbar.make(binding.root, loadErrorMessage(error, R.string.campgrounds), Snackbar.LENGTH_LONG).show()
+            viewModel.errorShown()
+        }
     }
 
     companion object {
         fun newInstance(): CampgroundFragment {
             return CampgroundFragment()
         }
-    }
-
-    private fun fetchCampgrounds() {
-        val client = AsyncHttpClient()
-        client.get(CAMPGROUND_URL, object : JsonHttpResponseHandler() {
-            override fun onFailure(
-                statusCode: Int,
-                headers: Headers?,
-                response: String?,
-                throwable: Throwable?
-            ) {
-                Log.e(TAG, "Failed to fetch campgrounds: $statusCode")
-            }
-
-            override fun onSuccess(statusCode: Int, headers: Headers, json: JSON) {
-                Log.i(TAG, "Successfully fetched campgrounds: $json")
-                try {
-                    val parsedJson = createJson().decodeFromString(
-                        CampgroundResponse.serializer(),
-                        json.jsonObject.toString()
-                    )
-                    parsedJson.data?.let { list ->
-                        campgrounds.addAll(list)
-                        campgroundAdapter.notifyDataSetChanged()
-                    }
-                } catch (e: JSONException) {
-                    Log.e(TAG, "Exception: $e")
-                }
-            }
-        })
     }
 }

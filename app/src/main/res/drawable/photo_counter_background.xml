@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The "3 / 12" pill on top of the photo gallery -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/photo_counter_background" />
+    <corners android:radius="12dp" />
+</shape>

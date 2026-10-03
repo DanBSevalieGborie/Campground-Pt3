@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Material Symbols "park-fill" (Apache 2.0) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="960"
+    android:viewportHeight="960">
+    <path
+        android:fillColor="#222"
+        android:pathData="M538,880L423,880L423,731L120,731L309,457L214,457L480,80L746,457L652,457L840,731L538,731L538,880Z" />
+</vector>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One page of a detail screen's photo gallery. ViewPager2 pages must fill the pager. -->
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/image_placeholder"
+    android:contentDescription="@string/photo_description"
+    android:scaleType="centerCrop" />

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The campground detail screen, laid out like the park detail screen -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".CampgroundDetailActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/Widget.ParksAndCampgrounds.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.ParksAndCampgrounds.Toolbar" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/gallery"
+                layout="@layout/view_photo_gallery" />
+
+            <LinearLayout
+                android:id="@+id/detail_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="16dp"
+                android:paddingTop="20dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="32dp">
+
+                <TextView
+                    android:id="@+id/campground_overline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.ParksAndCampgrounds.Overline"
+                    tools:text="Primitive Camping Areas" />
+
+                <TextView
+                    android:id="@+id/campground_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textStyle="bold"
+                    tools:text="Bird Island Basin Campground" />
+
+                <TextView
+                    android:id="@+id/campground_location"
+                    style="@style/Widget.ParksAndCampgrounds.LocationText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    tools:text="Corpus Christi, Texas" />
+
+                <!-- Directions in Google Maps, plus Reserve (or the NPS page when there's no booking link) -->
+                <LinearLayout
+                    android:id="@+id/action_buttons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/directions_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:text="@string/directions"
+                        app:icon="@drawable/ic_directions" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/reserve_button"
+                        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:text="@string/reserve"
+                        app:icon="@drawable/ic_event_available" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/website_button"
+                        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:text="@string/website"
+                        app:icon="@drawable/ic_open_in_new" />
+
+                </LinearLayout>
+
+                <!-- Nightly fee and number of sites, side by side -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/fee_card"
+                        style="@style/Widget.ParksAndCampgrounds.InfoCard"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/camping_fee"
+                                android:textAppearance="?attr/textAppearanceLabelLarge"
+                                android:textColor="?attr/colorOnPrimaryContainer" />
+
+                            <TextView
+                                android:id="@+id/fee_value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:textAppearance="?attr/textAppearanceTitleLarge"
+                                android:textColor="?attr/colorOnPrimaryContainer"
+                                android:textStyle="bold"
+                                tools:text="$8.00" />
+
+                            <TextView
+                                android:id="@+id/fee_detail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="2"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="?attr/colorOnPrimaryContainer"
+                                tools:text="Standard Tent or RV Site" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/sites_card"
+                        style="@style/Widget.ParksAndCampgrounds.InfoCard.Secondary"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/campsites"
+                                android:textAppearance="?attr/textAppearanceLabelLarge"
+                                android:textColor="?attr/colorOnSecondaryContainer" />
+
+                            <TextView
+                                android:id="@+id/sites_value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:textAppearance="?attr/textAppearanceTitleLarge"
+                                android:textColor="?attr/colorOnSecondaryContainer"
+                                android:textStyle="bold"
+                                tools:text="34" />
+
+                            <TextView
+                                android:id="@+id/sites_detail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="2"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="?attr/colorOnSecondaryContainer"
+                                tools:text="First-come, first-served" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/description_section"
+                    style="@style/Widget.ParksAndCampgrounds.Section">
+
+                    <TextView
+                        style="@style/Widget.ParksAndCampgrounds.SectionTitle"
+                        android:text="@string/about" />
+
+                    <TextView
+                        android:id="@+id/campground_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.ParksAndCampgrounds.Body"
+                        tools:text="Bird Island Basin lies along Laguna Madre with easy access for fishing, birding, windsurfing, and kayaking." />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/amenities_section"
+                    style="@style/Widget.ParksAndCampgrounds.Section">
+
+                    <TextView
+                        style="@style/Widget.ParksAndCampgrounds.SectionTitle"
+                        android:text="@string/amenities" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/amenities_chips"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:chipSpacingVertical="4dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/reservations_section"
+                    style="@style/Widget.ParksAndCampgrounds.Section">
+
+                    <TextView
+                        style="@style/Widget.ParksAndCampgrounds.SectionTitle"
+                        android:text="@string/reservations" />
+
+                    <TextView
+                        android:id="@+id/campground_reservations"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.ParksAndCampgrounds.Body"
+                        tools:text="Reservations are not accepted. All sites are first-come, first-served." />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/hours_section"
+                    style="@style/Widget.ParksAndCampgrounds.Section">
+
+                    <TextView
+                        style="@style/Widget.ParksAndCampgrounds.SectionTitle"
+                        android:text="@string/hours" />
+
+                    <TextView
+                        android:id="@+id/campground_hours"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.ParksAndCampgrounds.Body"
+                        tools:text="Open year-round. Check-in time is 1 pm, check-out time is 12 pm." />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/weather_section"
+                    style="@style/Widget.ParksAndCampgrounds.Section">
+
+                    <TextView
+                        style="@style/Widget.ParksAndCampgrounds.SectionTitle"
+                        android:text="@string/weather" />
+
+                    <TextView
+                        android:id="@+id/campground_weather"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.ParksAndCampgrounds.Body"
+                        tools:text="Year-round, wind speed ranges from 5-25 miles per hour." />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/getting_there_section"
+                    style="@style/Widget.ParksAndCampgrounds.Section">
+
+                    <TextView
+                        style="@style/Widget.ParksAndCampgrounds.SectionTitle"
+                        android:text="@string/getting_there" />
+
+                    <TextView
+                        android:id="@+id/campground_getting_there"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.ParksAndCampgrounds.Body"
+                        tools:text="From the park entrance station, travel south on Park Road 22 for 0.8 miles." />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

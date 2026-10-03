@@ -1,33 +1,19 @@
 package com.codepath.lab6
 
 import android.os.Bundle
-import android.util.Log
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.Fragment
 import com.codepath.lab6.databinding.ActivityMainBinding
-import com.codepath.asynchttpclient.AsyncHttpClient
-import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
-import kotlinx.serialization.json.Json
-import okhttp3.Headers
-import org.json.JSONException
 
-// Helper function for JSON parsing
-fun createJson() = Json {
-    isLenient = true
-    ignoreUnknownKeys = true
-    useAlternativeNames = false
-}
-
-private const val TAG = "MainActivity/"
-private val API_KEY = BuildConfig.API_KEY
-private val PARKS_URL = "https://developer.nps.gov/api/v1/parks?api_key=${API_KEY}"
-
+/**
+ * Hosts the two tabs. In this fragment-oriented setup the activity only
+ * manages navigation: the toolbar, the bottom navigation bar, and swapping
+ * [ParksFragment] / [CampgroundFragment] into the FrameLayout placeholder.
+ * Each fragment loads and shows its own data.
+ */
 class MainActivity : AppCompatActivity() {
 
-    private val parks = mutableListOf<Park>()
-    private lateinit var parksRecyclerView: RecyclerView
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,47 +21,55 @@ class MainActivity : AppCompatActivity() {
 
         // Set up ViewBinding
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
-        // Find RecyclerView and set up adapter
-        parksRecyclerView = findViewById(R.id.parks)
-        val parksAdapter = ParksAdapter(this, parks)
-        parksRecyclerView.adapter = parksAdapter
+        // Handle navigation selection: swap in the fragment for the tapped tab
+        binding.bottomNavigation.setOnItemSelectedListener { item -> showTab(item.itemId) }
 
-        // Use LinearLayoutManager with a divider
-        parksRecyclerView.layoutManager = LinearLayoutManager(this).also {
-            val dividerItemDecoration = DividerItemDecoration(this, it.orientation)
-            parksRecyclerView.addItemDecoration(dividerItemDecoration)
+        // Tapping the tab you're already on scrolls its list back to the top
+        // (instead of reloading the same fragment)
+        binding.bottomNavigation.setOnItemReselectedListener {
+            (supportFragmentManager.findFragmentById(R.id.main_frame_layout) as? ScrollsToTop)?.scrollToTop()
         }
 
-        // Fetch data from NPS Parks API
-        val client = AsyncHttpClient()
-        client.get(PARKS_URL, object : JsonHttpResponseHandler() {
-            override fun onFailure(
-                statusCode: Int,
-                headers: Headers?,
-                response: String?,
-                throwable: Throwable?
-            ) {
-                Log.e(TAG, "Failed to fetch parks: $statusCode")
-            }
+        // Start on the Parks tab — only on a fresh start. After a rotation the
+        // FragmentManager and the bottom bar restore the tab the user was on.
+        // Parks is the bar's first item, so it's already selected: setting
+        // selectedItemId to it would count as a *reselect* and never load the
+        // fragment. So load it directly.
+        if (savedInstanceState == null) {
+            showTab(R.id.nav_parks)
+        }
+    }
 
-            override fun onSuccess(statusCode: Int, headers: Headers, json: JSON) {
-                Log.i(TAG, "Successfully fetched parks: $json")
-                try {
-                    val parsedJson = createJson().decodeFromString(
-                        ParksResponse.serializer(),
-                        json.jsonObject.toString()
-                    )
-                    parsedJson.data?.let { list ->
-                        parks.addAll(list)
-                        parksAdapter.notifyDataSetChanged()
-                    }
-                } catch (e: JSONException) {
-                    Log.e(TAG, "Exception: $e")
-                }
-            }
-        })
+    private fun showTab(@IdRes tabId: Int): Boolean {
+        val fragment: Fragment = when (tabId) {
+            R.id.nav_parks -> ParksFragment.newInstance()
+            R.id.nav_campgrounds -> CampgroundFragment.newInstance()
+            else -> return false
+        }
+        replaceFragment(fragment)
+        updateTitle(tabId)
+        return true
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        // The bottom bar has restored its selected tab by now; match the toolbar to it
+        updateTitle(binding.bottomNavigation.selectedItemId)
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.main_frame_layout, fragment)
+        fragmentTransaction.commit()
+    }
+
+    private fun updateTitle(@IdRes tabId: Int) {
+        supportActionBar?.title = getString(
+            if (tabId == R.id.nav_campgrounds) R.string.title_campgrounds else R.string.title_parks
+        )
     }
 }

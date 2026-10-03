@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark-mode versions of the colors in values/colors.xml -->
+    <color name="forest_green">#FF9ED3A4</color>
+    <color name="on_forest_green">#FF0B3818</color>
+    <color name="forest_green_container">#FF1F4D2A</color>
+    <color name="on_forest_green_container">#FFCDE8CF</color>
+
+    <color name="trail_brown">#FFE3C28F</color>
+    <color name="on_trail_brown">#FF3F2C08</color>
+    <color name="trail_brown_container">#FF5A4119</color>
+    <color name="on_trail_brown_container">#FFF3E1C4</color>
+
+    <color name="screen_background">#FF111411</color>
+    <color name="card_background">#FF1C211C</color>
+    <color name="text_primary">#FFE2E3DD</color>
+    <color name="text_secondary">#FFC2C8BE</color>
+    <color name="outline">#FF444A42</color>
+    <color name="image_placeholder">#FF2A302A</color>
+
+    <color name="surface_container_lowest">#FF0C0F0C</color>
+    <color name="surface_container_low">#FF191D19</color>
+    <color name="surface_container">#FF1D211D</color>
+    <color name="surface_container_high">#FF272C27</color>
+    <color name="surface_container_highest">#FF323732</color>
+
+    <color name="toolbar_background">#FF1A2E1F</color>
+    <color name="on_toolbar">#FFFFFFFF</color>
+    <color name="bottom_nav_background">#FF1A2E1F</color>
+
+    <color name="photo_counter_background">#99000000</color>
+    <color name="price_tag_background">#E61C211C</color>
+    <color name="price_tag_text">#FF9ED3A4</color>
+</resources>

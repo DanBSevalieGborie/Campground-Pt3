@@ -1,5 +1,90 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Parks and Campgrounds</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--
+        The NPS API key isn't stored here. It lives in apikey.properties
+        (which is git-ignored) and reaches the code as BuildConfig.API_KEY.
+        See app/build.gradle.
+    -->
+
+    <!-- Bottom navigation + toolbar -->
+    <string name="nav_parks">Parks</string>
+    <string name="nav_campgrounds">Campgrounds</string>
+    <string name="title_parks">National Parks</string>
+    <string name="title_campgrounds">Campgrounds</string>
+
+    <!-- Used inside the error messages: "Couldn't load parks…" -->
+    <string name="parks">parks</string>
+    <string name="campgrounds">campgrounds</string>
+
+    <!-- Search -->
+    <string name="action_search">Search</string>
+    <string name="search_parks_hint">Park name or state</string>
+    <string name="search_campgrounds_hint">Campground, town or state</string>
+    <string name="no_parks_match">No parks match \"%1$s\"</string>
+    <string name="no_campgrounds_match">No campgrounds match \"%1$s\"</string>
+    <string name="no_parks_found">The Park Service didn\'t return any parks. Try again in a bit.</string>
+    <string name="no_campgrounds_found">The Park Service didn\'t return any campgrounds. Try again in a bit.</string>
+
+    <!-- Loading errors -->
+    <string name="retry">Retry</string>
+    <string name="error_network">Couldn\'t load %1$s. Check your internet connection and try again.</string>
+    <string name="error_api_key">The National Park Service rejected the API key. Check API_KEY in apikey.properties.</string>
+    <string name="error_rate_limit">Too many requests for this API key right now. Add your own key to apikey.properties, or try again in a bit.</string>
+    <string name="error_parse">Couldn\'t read the %1$s data. Please try again.</string>
+    <string name="error_no_app">No app available to open this link</string>
+
+    <!-- List cards -->
+    <string name="park_image_description">Photo of the park</string>
+    <string name="campground_image_description">Photo of the campground</string>
+    <string name="photo_description">Photo</string>
+    <string name="campground">Campground</string>
+    <plurals name="campground_type_and_sites">
+        <item quantity="one">%1$s · %2$d site</item>
+        <item quantity="other">%1$s · %2$d sites</item>
+    </plurals>
+    <string name="price_per_night">%1$s / night</string>
+
+    <!-- Detail screens -->
+    <string name="photo_counter">%1$d / %2$d</string>
+    <string name="photo_credit">Photo: %1$s</string>
+    <string name="directions">Directions</string>
+    <string name="website">Website</string>
+    <string name="reserve">Reserve</string>
+    <string name="entrance_fee">Entrance fee</string>
+    <string name="camping_fee">Camping fee</string>
+    <string name="fee_none">No fee listed</string>
+    <string name="campsites">Campsites</string>
+    <string name="sites_mixed" tools:ignore="PluralsCandidate">%1$d reservable · %2$d first-come</string>
+    <string name="sites_reservable">Reservations accepted</string>
+    <string name="sites_first_come">First-come, first-served</string>
+    <string name="about">About</string>
+    <string name="things_to_do">Things to do</string>
+    <string name="more_activities" tools:ignore="PluralsCandidate">+%1$d more</string>
+    <string name="amenities">Amenities</string>
+    <string name="reservations">Reservations</string>
+    <string name="hours">Hours</string>
+    <string name="weather">Weather</string>
+    <string name="getting_there">Getting there</string>
+
+    <!-- Campground amenities -->
+    <string name="amenity_water">Drinking water</string>
+    <string name="amenity_flush_toilets">Flush toilets</string>
+    <string name="amenity_vault_toilets">Vault toilets</string>
+    <string name="amenity_toilets">Toilets</string>
+    <string name="amenity_showers">Showers</string>
+    <string name="amenity_electric">Electric hookups</string>
+    <string name="amenity_rvs">RVs allowed</string>
+    <string name="amenity_rvs_length">RVs up to %1$d ft</string>
+    <string name="amenity_dump_station">Dump station</string>
+    <string name="amenity_camp_store">Camp store</string>
+    <string name="amenity_firewood">Firewood for sale</string>
+    <string name="amenity_ice">Ice for sale</string>
+    <string name="amenity_laundry">Laundry</string>
+    <string name="amenity_food_lockers">Food storage lockers</string>
+    <string name="amenity_trash">Trash collection</string>
+    <string name="amenity_cell">Cell service</string>
+    <string name="amenity_internet">Internet</string>
+    <string name="amenity_camp_host">Camp host</string>
+    <string name="amenity_amphitheater">Amphitheater</string>
 </resources>
